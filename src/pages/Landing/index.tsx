@@ -1,14 +1,24 @@
-import React    from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link }            from 'react-router-dom';
 
 import './styles.css';
-import logoImg from '../../assets/images/logo.svg';
-import landingImg from '../../assets/images/landing.svg';
-import studyIcon from '../../assets/images/icons/study.svg';
+import logoImg         from '../../assets/images/logo.svg';
+import landingImg      from '../../assets/images/landing.svg';
+import studyIcon       from '../../assets/images/icons/study.svg';
 import giveClassesIcon from '../../assets/images/icons/give-classes.svg';
-import purpleHearIcon from '../../assets/images/icons/purple-heart.svg';
+import purpleHearIcon  from '../../assets/images/icons/purple-heart.svg';
+import api             from '../../services/api';
 
 function Landing() {
+  const [ totalConnections, setTotalConnections ] = useState(0);
+
+  useEffect(() => {
+    api.get('/connections').then(response => {
+      const { total } = response.data;
+      setTotalConnections(total);
+    })
+  }, [])
+
   return (
     <div id="page-landing">
       <div id="page-landing-content" className="container">
@@ -36,7 +46,7 @@ function Landing() {
         </div>
 
         <span className="total-connections">
-          Total de 13 conexões já realizadas <img src={purpleHearIcon} alt=""/>
+          Total de {totalConnections} conexões já realizadas <img src={purpleHearIcon} alt=""/>
         </span>
       </div>
     </div>
